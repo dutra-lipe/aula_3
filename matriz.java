@@ -1,13 +1,64 @@
-/*
+import java.util.Scanner;
 
-Escreva um programa em Java que recebe como parâmetros da linha de comando as dimensões 
-de duas matrizes A e B, em seguida lê do teclado o conteúdo das duas matrizes de valores reais 
-e, por fim, exibe A * B. Lembre-se de usar as seguintes boas práticas de programação:
+class Matriz { 
+    public static double[][] leMatriz(int num_lin, int num_col, Scanner sc) {
+        double[][] M = new double[num_lin][num_col];
+        for(int i=0; i<num_lin; i++){
+            for(int j=0; j<num_col; j++){
+                double valor = sc.nextDouble();
+                M[i][j] = valor;
+            }
+        }
+        return M;
 
-Bons nomes para classes, métodos e variáveis.
+    }
 
-Evitar repetição de código.
+    public static void exibeMatriz(double[][] M) {
+        int num_lin = M.length;
+        int num_col = M[0].length;
 
-Organizar o código em diferentes métodos curtos (<5 a 10 linhas)
+        for(int i=0; i<num_lin; i++){
+            for(int j=0; j<num_col; j++){
+                System.out.println(M[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 
-*/
+    public static double[][] matMult(double[][] A, double[][] B) {
+        int num_lin = A.length;
+        int num_col = B[0].length;
+        double [][] C = new double[num_lin][num_col];
+        for(int i=0; i<num_lin; i++){
+            for(int j=0; j<num_col; j++){
+                for(int k = 0; k<B.length; k++) {
+                    C[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+        return C;
+    }
+
+    public static void main(String[] args) {
+        if (args.length < 4) {
+            System.out.println("Use java matriz.java num_lin_A num_col_A num_lin_B num_col_B");
+            return;
+        }
+
+        int num_lin_A = Integer.parseInt(args[0]);
+        int num_col_A = Integer.parseInt(args[1]);
+        int num_lin_B = Integer.parseInt(args[2]);
+        int num_col_B = Integer.parseInt(args[3]);
+
+        Scanner sc = new Scanner(System.in);
+
+        double[][] A = leMatriz(num_lin_A, num_col_A, sc);
+        exibeMatriz(A);
+        double[][] B = leMatriz(num_lin_B, num_col_B, sc);
+        exibeMatriz(B);
+
+        System.out.println("C: ");
+        exibeMatriz(matMult(A, B));
+    }
+
+}
